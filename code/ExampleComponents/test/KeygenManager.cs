@@ -70,74 +70,74 @@ public class KeygenManager : Component
 	{
 		base.OnEnabled();
 
-		var time = Time.Now;
-		var realTime = RealTime.Now;
+		//var time = Time.Now;
+		//var realTime = RealTime.Now;
 
-		ElapsedTime = 0f;
+		//ElapsedTime = 0f;
 
-		_cubeContainer = Scene.GetAllObjects( true ).Where( x => x.Name == "CubeContainer" ).FirstOrDefault();
+		//_cubeContainer = Scene.GetAllObjects( true ).Where( x => x.Name == "CubeContainer" ).FirstOrDefault();
 
-		Camera = Scene.GetAllComponents<CameraComponent>().FirstOrDefault();
-		_keygenHud = Scene.GetAllComponents<KeygenHud>().FirstOrDefault();
+		//Camera = Scene.GetAllComponents<CameraComponent>().FirstOrDefault();
+		//_keygenHud = Scene.GetAllComponents<KeygenHud>().FirstOrDefault();
 
-		if ( _cubeContainer != null )
-			_cubeContainer.Destroy();
+		//if ( _cubeContainer != null )
+		//	_cubeContainer.Destroy();
 
-		_cubeContainer = Scene.CreateObject( true );
-		_cubeContainer.Name = "CubeContainer";
+		//_cubeContainer = Scene.CreateObject( true );
+		//_cubeContainer.Name = "CubeContainer";
 
 		MusicPlayer = MusicPlayer.Play( FileSystem.Mounted, $"test/music/varg_stars.mp3" );
-		//MusicPlayer = MusicPlayer.Play( FileSystem.Mounted, $"test/music/varg_stars_mini.wav" );
-		MusicPlayer.Volume = 0f;
-		MusicPlayer.Repeat = true;
-		MusicPlayer.ListenLocal = true;
+		////MusicPlayer = MusicPlayer.Play( FileSystem.Mounted, $"test/music/varg_stars_mini.wav" );
+		//MusicPlayer.Volume = 0f;
+		//MusicPlayer.Repeat = true;
+		//MusicPlayer.ListenLocal = true;
 
-		TimeSinceBeat = 0f;
-		_lastBeatTime = STARTING_BEAT_TIME_OFFSET;
-		_lastPlaybackTime = 0f;
-		CurrSectionLength = Game.Random.Int( 2, 4 ) * 4;
+		//TimeSinceBeat = 0f;
+		//_lastBeatTime = STARTING_BEAT_TIME_OFFSET;
+		//_lastPlaybackTime = 0f;
+		//CurrSectionLength = Game.Random.Int( 2, 4 ) * 4;
 
-		int numCubes = SPEC_MAX;
-		for (int i = 0; i < numCubes; i += 2)
-		{
-			var pos = new Vector3( 0f, 380f - i * 1.5f, 0f );
-			var cube = SceneUtility.Instantiate( CubePrefab, pos);
-			cube.Parent = _cubeContainer;
-			cube.Transform.Scale = new Vector3( Utils.Map(i, 0, numCubes, 0.05f, 0.2f), 0.05f, 0.01f );
-			cube.Name = $"cube_{i}";
-			//cube.Components.Get<ModelRenderer>().ShouldCastShadows = false;
-			_cubes.Add( cube );
-		}
+		//int numCubes = SPEC_MAX;
+		//for (int i = 0; i < numCubes; i += 2)
+		//{
+		//	var pos = new Vector3( 0f, 380f - i * 1.5f, 0f );
+		//	var cube = SceneUtility.Instantiate( CubePrefab, pos);
+		//	cube.Parent = _cubeContainer;
+		//	cube.Transform.Scale = new Vector3( Utils.Map(i, 0, numCubes, 0.05f, 0.2f), 0.05f, 0.01f );
+		//	cube.Name = $"cube_{i}";
+		//	//cube.Components.Get<ModelRenderer>().ShouldCastShadows = false;
+		//	_cubes.Add( cube );
+		//}
 
-		BarColorHigh = TargetBarColorHigh = Color.Red;
-		BarColorLow = TargetBarColorLow = Color.Blue;
+		//BarColorHigh = TargetBarColorHigh = Color.Red;
+		//BarColorLow = TargetBarColorLow = Color.Blue;
 
-		MainCitizen = SpawnCitizenObj( new Vector3(-245f, -24f, 150f), Rotation.FromYaw( 180f ) );
-		//MainCitizen.Components.Get<KeygenPlayer>().Eye.Transform.LocalPosition = new Vector3( 0f, -1000f, 0f );
-		MainCitizen.Components.Get<KeygenCitizenAnimator>().TargetPosition = MainCitizen.Transform.Position;
-		InitializeMainCitizen();
+		//MainCitizen = SpawnCitizenObj( new Vector3(-245f, -24f, 150f), Rotation.FromYaw( 180f ) );
+		////MainCitizen.Components.Get<KeygenPlayer>().Eye.Transform.LocalPosition = new Vector3( 0f, -1000f, 0f );
+		//MainCitizen.Components.Get<KeygenCitizenAnimator>().TargetPosition = MainCitizen.Transform.Position;
+		//InitializeMainCitizen();
 
-		for (int i = 0; i < 24; i++)
-		{
-			var bgCitizenObj = SpawnCitizenObj( new Vector3( 30f, BG_CITIZEN_Y_LIMIT - 50f * i, 100f ), Rotation.FromYaw( 180f ) );
-			var bgAnim = bgCitizenObj.Components.Get<KeygenCitizenAnimator>();
-			bgAnim.NoclipMode = NoclipMode.Enabled;
-			bgAnim.NoclipModeModulus = 1;
-			bgAnim.SwimmingModeModulus = 1;
-			BgCitizens.Add( bgCitizenObj );
-		}
+		//for (int i = 0; i < 24; i++)
+		//{
+		//	var bgCitizenObj = SpawnCitizenObj( new Vector3( 30f, BG_CITIZEN_Y_LIMIT - 50f * i, 100f ), Rotation.FromYaw( 180f ) );
+		//	var bgAnim = bgCitizenObj.Components.Get<KeygenCitizenAnimator>();
+		//	bgAnim.NoclipMode = NoclipMode.Enabled;
+		//	bgAnim.NoclipModeModulus = 1;
+		//	bgAnim.SwimmingModeModulus = 1;
+		//	BgCitizens.Add( bgCitizenObj );
+		//}
 
-		FrameColor = _oldFrameColor = new Color( 0.1f, 0.1f, 0.1f );
-		_targetFrameColor = Utils.GetRandomColor();
-		_timeSinceFrameColor = 0f;
+		//FrameColor = _oldFrameColor = new Color( 0.1f, 0.1f, 0.1f );
+		//_targetFrameColor = Utils.GetRandomColor();
+		//_timeSinceFrameColor = 0f;
 
-		BgFlashColor = new Color( Game.Random.Float( 0f, 0.02f ), Game.Random.Float( 0f, 0.02f ), Game.Random.Float( 0f, 0.02f ) );
-		_bgFlashTime = Game.Random.Float( 0.1f, 0.35f );
+		//BgFlashColor = new Color( Game.Random.Float( 0f, 0.02f ), Game.Random.Float( 0f, 0.02f ), Game.Random.Float( 0f, 0.02f ) );
+		//_bgFlashTime = Game.Random.Float( 0.1f, 0.35f );
 
-		for ( int i = 0; i < 8; i++ )
-			SpawnBgCube();
+		//for ( int i = 0; i < 8; i++ )
+		//	SpawnBgCube();
 
-		_flyingDelay = Game.Random.Float( 2f, 3f );
+		//_flyingDelay = Game.Random.Float( 2f, 3f );
 	}
 
 	protected override void OnUpdate()
@@ -147,149 +147,149 @@ public class KeygenManager : Component
 		//Log.Info( $"{MusicPlayer.Amplitude}" );
 		//Log.Info( $"{MusicPlayer.PlaybackTime}" );
 
-		if( MusicPlayer.PlaybackTime < _lastPlaybackTime)
-		{
-			_lastBeatTime = MusicPlayer.PlaybackTime - BEAT_DELAY + STARTING_BEAT_TIME_OFFSET;
-			//Log.Info( $"PlaybackTime: {MusicPlayer.PlaybackTime}, _lastBeatTime: {_lastBeatTime}" );
-		}
+		//if ( MusicPlayer.PlaybackTime < _lastPlaybackTime )
+		//{
+		//	_lastBeatTime = MusicPlayer.PlaybackTime - BEAT_DELAY + STARTING_BEAT_TIME_OFFSET;
+		//	//Log.Info( $"PlaybackTime: {MusicPlayer.PlaybackTime}, _lastBeatTime: {_lastBeatTime}" );
+		//}
 
-		_lastPlaybackTime = MusicPlayer.PlaybackTime;
+		//_lastPlaybackTime = MusicPlayer.PlaybackTime;
 
-		if( MusicPlayer.PlaybackTime > _lastBeatTime + BEAT_DELAY)
-		{
-			_lastBeatTime = MusicPlayer.PlaybackTime;
-			TimeSinceBeat = 0f;
-			NumBeats++;
+		//if ( MusicPlayer.PlaybackTime > _lastBeatTime + BEAT_DELAY )
+		//{
+		//	_lastBeatTime = MusicPlayer.PlaybackTime;
+		//	TimeSinceBeat = 0f;
+		//	NumBeats++;
 
-			//Sound.Play( "beep" );
+		//	//Sound.Play( "beep" );
 
-			OnBeat();
-		}
+		//	OnBeat();
+		//}
 
-		float dt = Time.Delta;
+		//float dt = Time.Delta;
 
-		float MAX_VOLUME = 0.5f;
-		MusicVolume = Utils.Map( ElapsedTime, 0f, 5f, 0f, MAX_VOLUME, EasingType.Linear );
-		MusicPlayer.Volume = MusicVolume;
+		//float MAX_VOLUME = 0.5f;
+		//MusicVolume = Utils.Map( ElapsedTime, 0f, 5f, 0f, MAX_VOLUME, EasingType.Linear );
+		//MusicPlayer.Volume = MusicVolume;
 
-		ElapsedTime += dt;
+		//ElapsedTime += dt;
 
-		float SCALE_FACTOR = 1f * (MusicVolume / MAX_VOLUME);
-		float lerpSpeed = Utils.Map( Utils.FastSin( Time.Now * 0.5f ), -1f, 1f, 0.03f, 0.1f );
+		//float SCALE_FACTOR = 1f * (MusicVolume / MAX_VOLUME);
+		//float lerpSpeed = Utils.Map( Utils.FastSin( Time.Now * 0.5f ), -1f, 1f, 0.03f, 0.1f );
 
-		float[] _segmentSums = new float[SPEC_MAX / SEGMENT_SIZE];
+		//float[] _segmentSums = new float[SPEC_MAX / SEGMENT_SIZE];
 
-		BarColorHigh = Color.Lerp( BarColorHigh, TargetBarColorHigh, dt * 0.9f );
-		BarColorLow = Color.Lerp( BarColorLow, TargetBarColorLow, dt * 0.9f );
+		//BarColorHigh = Color.Lerp( BarColorHigh, TargetBarColorHigh, dt * 0.9f );
+		//BarColorLow = Color.Lerp( BarColorLow, TargetBarColorLow, dt * 0.9f );
 
-		int i = 0;
-		foreach(var sample in MusicPlayer.Spectrum)
-		{
-			if ( i % 2 != 0 )
-			{
-				i++;
-				continue;
-			}
+		//int i = 0;
+		//foreach(var sample in MusicPlayer.Spectrum)
+		//{
+		//	if ( i % 2 != 0 )
+		//	{
+		//		i++;
+		//		continue;
+		//	}
 
-			if ( i % 2 != 0 )
-			{
-				i++;
-				continue;
-			}
+		//	if ( i % 2 != 0 )
+		//	{
+		//		i++;
+		//		continue;
+		//	}
 
-			int index = i / 2;
+		//	int index = i / 2;
 
-			if ( index >= _cubes.Count )
-				break;
+		//	if ( index >= _cubes.Count )
+		//		break;
 
-			var cube = _cubes[index];
-			float target = sample * SCALE_FACTOR;
-			float current = cube.Transform.Scale.z;
+		//	var cube = _cubes[index];
+		//	float target = sample * SCALE_FACTOR;
+		//	float current = cube.Transform.Scale.z;
 
-			float lerped = current + (target - current) * lerpSpeed * dt * 100f;
+		//	float lerped = current + (target - current) * lerpSpeed * dt * 100f;
 
-			cube.Transform.Scale = new Vector3( cube.Transform.Scale.x, cube.Transform.Scale.y, lerped );
-			cube.Components.Get<ModelRenderer>().Tint = Color.Lerp( BarColorLow, BarColorHigh, Utils.Map( lerped, 0f, 5f, 0f, 1f, EasingType.QuadIn) );
-			cube.Name = $"cube_{index} ({lerped})";
+		//	cube.Transform.Scale = new Vector3( cube.Transform.Scale.x, cube.Transform.Scale.y, lerped );
+		//	cube.Components.Get<ModelRenderer>().Tint = Color.Lerp( BarColorLow, BarColorHigh, Utils.Map( lerped, 0f, 5f, 0f, 1f, EasingType.QuadIn) );
+		//	cube.Name = $"cube_{index} ({lerped})";
 
-			int segment = MathX.FloorToInt( i / SEGMENT_SIZE );
-			_segmentSums[segment] += lerped;
+		//	int segment = MathX.FloorToInt( i / SEGMENT_SIZE );
+		//	_segmentSums[segment] += lerped;
 
-			i++;
-		}
+		//	i++;
+		//}
 
-		for(int seg = 0; seg < SPEC_MAX / SEGMENT_SIZE; seg++ )
-		{
-			var val = _segmentSums[seg] / SEGMENT_SIZE;
-			SegmentAverages[seg] = float.IsNaN( val ) ? 0f : val;
-		}
+		//for(int seg = 0; seg < SPEC_MAX / SEGMENT_SIZE; seg++ )
+		//{
+		//	var val = _segmentSums[seg] / SEGMENT_SIZE;
+		//	SegmentAverages[seg] = float.IsNaN( val ) ? 0f : val;
+		//}
 
-		// main citizen
-		var mainCitizenAnim = MainCitizen.Components.Get<KeygenCitizenAnimator>();
-		//mainCitizenAnim.HeightMode = HeightMode.Enabled;
-		//mainCitizenAnim.AttackMode = AttackMode.Enabled;
-		//mainCitizenAnim.HoldTypeMode = HoldTypeMode.HoldNone;
+		//// main citizen
+		//var mainCitizenAnim = MainCitizen.Components.Get<KeygenCitizenAnimator>();
+		////mainCitizenAnim.HeightMode = HeightMode.Enabled;
+		////mainCitizenAnim.AttackMode = AttackMode.Enabled;
+		////mainCitizenAnim.HoldTypeMode = HoldTypeMode.HoldNone;
 
-		//mainCitizenAnim.HandIKMode = NumBeats % 4 <= 1 ? HandIKMode.Enabled : HandIKMode.None;
-		//mainCitizenAnim.FootIKMode = NumBeats % 5 <= 3 ? FootIKMode.Enabled : FootIKMode.None;
-		//mainCitizenAnim.LookDirMode = NumBeats % 4 <= 1 ? LookDirMode.Enabled : LookDirMode.None;
-		//mainCitizenAnim.AnimMoveMode = NumBeats % 5 <= 3 ? AnimMoveMode.Enabled : AnimMoveMode.None;
-		//mainCitizenAnim.NoclipMode = NoclipMode.Enabled;
+		////mainCitizenAnim.HandIKMode = NumBeats % 4 <= 1 ? HandIKMode.Enabled : HandIKMode.None;
+		////mainCitizenAnim.FootIKMode = NumBeats % 5 <= 3 ? FootIKMode.Enabled : FootIKMode.None;
+		////mainCitizenAnim.LookDirMode = NumBeats % 4 <= 1 ? LookDirMode.Enabled : LookDirMode.None;
+		////mainCitizenAnim.AnimMoveMode = NumBeats % 5 <= 3 ? AnimMoveMode.Enabled : AnimMoveMode.None;
+		////mainCitizenAnim.NoclipMode = NoclipMode.Enabled;
 
-		//mainCitizenAnim.MoveMode = MoveMode.TargetPos;
-		//MainCitizen.Transform.Position = MainCitizen.Transform.Position.WithX( Utils.Map(TimeSinceBeat, 0f, BEAT_DELAY, -260f, -245f, EasingType.QuadOut) );
+		////mainCitizenAnim.MoveMode = MoveMode.TargetPos;
+		////MainCitizen.Transform.Position = MainCitizen.Transform.Position.WithX( Utils.Map(TimeSinceBeat, 0f, BEAT_DELAY, -260f, -245f, EasingType.QuadOut) );
 
-		// background citizens
-		int citizenNum = 0;
-		float scrollSpeed = (100f + (NumBeats % 12f) * 20f) * (NumBeats % 16 < 8 ? -1f : 1f);
-		foreach(var citizenObj in BgCitizens)
-		{
-			citizenObj.Transform.Position += new Vector3( 0f, -1f, 0f ) * scrollSpeed * dt;
-			var posZ = 100f + Utils.FastSin( citizenNum + Time.Now * 4f ) * (40f + Utils.FastSin(Time.Now * 0.5f) * 40f);
-			citizenObj.Transform.Position = citizenObj.Transform.Position.WithZ( posZ );
+		//// background citizens
+		//int citizenNum = 0;
+		//float scrollSpeed = (100f + (NumBeats % 12f) * 20f) * (NumBeats % 16 < 8 ? -1f : 1f);
+		//foreach(var citizenObj in BgCitizens)
+		//{
+		//	citizenObj.Transform.Position += new Vector3( 0f, -1f, 0f ) * scrollSpeed * dt;
+		//	var posZ = 100f + Utils.FastSin( citizenNum + Time.Now * 4f ) * (40f + Utils.FastSin(Time.Now * 0.5f) * 40f);
+		//	citizenObj.Transform.Position = citizenObj.Transform.Position.WithZ( posZ );
 
-			var posY = citizenObj.Transform.Position.y;
+		//	var posY = citizenObj.Transform.Position.y;
 
-			if ( posY < -BG_CITIZEN_Y_LIMIT )
-				citizenObj.Transform.Position = new Vector3( citizenObj.Transform.Position.x, posY + BG_CITIZEN_Y_LIMIT * 2f, citizenObj.Transform.Position.z );
-			else if ( posY > BG_CITIZEN_Y_LIMIT )
-				citizenObj.Transform.Position = new Vector3( citizenObj.Transform.Position.x, posY - BG_CITIZEN_Y_LIMIT * 2f, citizenObj.Transform.Position.z );
+		//	if ( posY < -BG_CITIZEN_Y_LIMIT )
+		//		citizenObj.Transform.Position = new Vector3( citizenObj.Transform.Position.x, posY + BG_CITIZEN_Y_LIMIT * 2f, citizenObj.Transform.Position.z );
+		//	else if ( posY > BG_CITIZEN_Y_LIMIT )
+		//		citizenObj.Transform.Position = new Vector3( citizenObj.Transform.Position.x, posY - BG_CITIZEN_Y_LIMIT * 2f, citizenObj.Transform.Position.z );
 
-			float average = SegmentAverages[citizenNum % SegmentAverages.Count()];
-			var anim = citizenObj.Components.Get<KeygenCitizenAnimator>();
-			anim.Height = Utils.DynamicEaseTo( anim.Height, Utils.Map( average, 0f, 11f, 0f, 2f, _bgCitizenEasingType ), 0.2f, dt);
+		//	float average = SegmentAverages[citizenNum % SegmentAverages.Count()];
+		//	var anim = citizenObj.Components.Get<KeygenCitizenAnimator>();
+		//	anim.Height = Utils.DynamicEaseTo( anim.Height, Utils.Map( average, 0f, 11f, 0f, 2f, _bgCitizenEasingType ), 0.2f, dt);
 
-			var colorA = Color.Lerp( BarColorLow, BarColorHigh, Utils.Map( average, 0f, 5f, 0f, 1f, EasingType.SineIn ) ).WithAlpha( Utils.Map( average, 0f, 1f, 0f, 1f, EasingType.Linear ) );
-			var colorB = colorA * 0.9f;
-			var color = Color.Lerp( colorA, colorB, Utils.FastSin(Time.Now * 64f));
-			citizenObj.Children.Find( x => x.Name == "Body" ).Components.Get<ModelRenderer>().Tint = color;
+		//	var colorA = Color.Lerp( BarColorLow, BarColorHigh, Utils.Map( average, 0f, 5f, 0f, 1f, EasingType.SineIn ) ).WithAlpha( Utils.Map( average, 0f, 1f, 0f, 1f, EasingType.Linear ) );
+		//	var colorB = colorA * 0.9f;
+		//	var color = Color.Lerp( colorA, colorB, Utils.FastSin(Time.Now * 64f));
+		//	citizenObj.Children.Find( x => x.Name == "Body" ).Components.Get<ModelRenderer>().Tint = color;
 
-			citizenObj.Transform.Scale = Utils.Map( SegmentAverages[citizenNum % SegmentAverages.Count()], 0f, 3f, 0.9f, 1.4f );
+		//	citizenObj.Transform.Scale = Utils.Map( SegmentAverages[citizenNum % SegmentAverages.Count()], 0f, 3f, 0.9f, 1.4f );
 
 
-			citizenNum++;
-		}
+		//	citizenNum++;
+		//}
 
-		if( _timeSinceFrameColor > _colorChangeTime)
-		{
-			FrameColor = _oldFrameColor = _targetFrameColor;
-			_timeSinceFrameColor = 0f;
-			_targetFrameColor = Utils.GetRandomColor();
-		}
-		else
-		{
-			FrameColor = Color.Lerp( _oldFrameColor, _targetFrameColor, Utils.Map( _timeSinceFrameColor, 0f, _colorChangeTime, 0f, 1f ) );
-		}
+		//if( _timeSinceFrameColor > _colorChangeTime)
+		//{
+		//	FrameColor = _oldFrameColor = _targetFrameColor;
+		//	_timeSinceFrameColor = 0f;
+		//	_targetFrameColor = Utils.GetRandomColor();
+		//}
+		//else
+		//{
+		//	FrameColor = Color.Lerp( _oldFrameColor, _targetFrameColor, Utils.Map( _timeSinceFrameColor, 0f, _colorChangeTime, 0f, 1f ) );
+		//}
 
-		Camera.BackgroundColor = Color.Lerp( BgFlashColor, Color.Black, Utils.Map(TimeSinceBeat, 0f, _bgFlashTime, 0f, 1f, _bgFlashEasingType ) );
+		//Camera.BackgroundColor = Color.Lerp( BgFlashColor, Color.Black, Utils.Map(TimeSinceBeat, 0f, _bgFlashTime, 0f, 1f, _bgFlashEasingType ) );
 
-		if(_timeSinceFlying > _flyingDelay)
-		{
-			SpawnEmojiWorldPanel( _flying[_flyingNum % _flying.Length], goingRight: true );
-			_flyingDelay = Game.Random.Float( 3f, 5f );
-			_timeSinceFlying = 0f;
-			_flyingNum++;
-		}
+		//if(_timeSinceFlying > _flyingDelay)
+		//{
+		//	SpawnEmojiWorldPanel( _flying[_flyingNum % _flying.Length], goingRight: true );
+		//	_flyingDelay = Game.Random.Float( 3f, 5f );
+		//	_timeSinceFlying = 0f;
+		//	_flyingNum++;
+		//}
 	}
 
 	void InitializeMainCitizen()

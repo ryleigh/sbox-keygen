@@ -125,7 +125,6 @@
       "Id": "23397310-b7ff-4da2-9c8b-e192e5f43fef",
       "Name": "Test",
       "Position": "-201.0819,-444.5436,671.0905",
-      "Enabled": true,
       "Children": [
         {
           "Id": "41372026-2a9d-4a5c-9bf4-c6b62ce8605d",
@@ -138,23 +137,6 @@
               "__enabled": true
             }
           ]
-        }
-      ]
-    },
-    {
-      "Id": "068cd97b-5b35-4d6a-9dbb-097bdeda4a75",
-      "Name": "Fog",
-      "Position": "-180.0553,0,200",
-      "Components": [
-        {
-          "__type": "VolumetricFogVolume",
-          "__enabled": true,
-          "Bounds": {
-            "Mins": "-150,-150,-150",
-            "Maxs": "150,150,150"
-          },
-          "FalloffExponent": 1,
-          "Strength": 2
         }
       ]
     },
