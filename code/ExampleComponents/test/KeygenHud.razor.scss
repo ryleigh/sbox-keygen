@@ -1,0 +1,158 @@
+KeygenHud {
+    width: 100%;
+    height: 100%;
+    //justify-content: center;
+    //align-items: center;
+    //flex-direction: column;
+    font-family: 'Courier New';
+
+    .overlay {
+        width: 100%;
+        height: 100%;
+        background-color: black;
+        z-index: 999;
+    }
+
+    .gen_container {
+        position: absolute;
+        pointer-events: all;
+        border: 2px solid #222222;
+        background-color: #44444433;
+        width: 500px;
+        height: 150px;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        z-index: 1;
+    }
+
+    .gen_key {
+        width: 440px;
+        height: 50px;
+        color: #ffffffdd;
+        font-size: 19px;
+        font-weight: 600;
+        border: 2px solid #ffffff11;
+        background-color: #222222aa;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        white-space: nowrap;
+        flex-direction: row;
+    }
+
+    .gen_button {
+        width: 140px;
+        height: 30px;
+        justify-content: center;
+        align-items: center;
+        border: 2px solid #ffffff22;
+        background-color: #22222255;
+        color: #ffffff99;
+        font-size: 16px;
+        font-weight: 600;
+        white-space: nowrap;
+        margin-top: 10px;
+
+        &:hover {
+            color: #ffffffbb;
+            border: 2px solid #ffffff44;
+            font-weight: 700;
+        }
+
+        &:active {
+            color: #ffffffff;
+            border: 2px solid #ffffff66;
+            font-weight: 800;
+        }
+    }
+
+    .song_banner {
+        position: absolute;
+        width: 100%;
+        height: 30px;
+        top: 0px;
+        background-color: #000000aa;
+        overflow: hidden;
+        align-items: center;
+    }
+
+    .song_name {
+        color: #ffffff88;
+        font-style: italic;
+        font-size: 16px;
+    }
+
+    .banner_emoji {
+        color: #ffffff33;
+        font-size: 22px;
+        font-family: W10Emoji;
+    }
+
+    .checkmark {
+        position: absolute;
+        left: 450px;
+        top: 15px;
+        color: #ffffff;
+        font-size: 24px;
+    }
+
+    .frame {
+        position: absolute;
+        border: 2px solid #222222;
+        width: 98%;
+        height: 97%;
+        left: 1%;
+        top: 1.5%;
+        overflow: hidden;
+        z-index: 1001;
+    }
+
+    .trail {
+        position: absolute;
+        width: 30px;
+        height: 30px;
+        //background-color: #ff000044;
+        font-size: 28px;
+        overflow: visible;
+        justify-content: center;
+        align-items: center;
+        font-family: W10Emoji;
+    }
+
+    .frame_bot {
+        position: absolute;
+        width: 100%;
+        height: 1.5%;
+        bottom: 0%;
+        background-color: #444444;
+        z-index: 1000;
+    }
+
+    .frame_top {
+        position: absolute;
+        width: 100%;
+        height: 1.5%;
+        top: 0%;
+        background-color: #444444;
+        z-index: 1000;
+    }
+
+    .frame_left {
+        position: absolute;
+        width: 1%;
+        height: 100%;
+        left: 0%;
+        background-color: #444444;
+        z-index: 1000;
+    }
+
+    .frame_right {
+        position: absolute;
+        width: 1%;
+        height: 100%;
+        right: 0%;
+        background-color: #444444;
+        z-index: 1000;
+    }
+}

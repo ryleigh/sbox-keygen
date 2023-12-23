@@ -1,0 +1,13 @@
+{
+  "UI": false,
+  "Volume": "1.00,1.00,0",
+  "Pitch": "1.05,1.30,1",
+  "Decibels": 45,
+  "SelectionMode": "Random",
+  "Sounds": [
+    "test/sfx/beep2.vsnd"
+  ],
+  "MaximumDistance": 491.52356,
+  "MinimumDistance": 24.576178,
+  "__references": []
+}

@@ -1,0 +1,204 @@
+{
+  "GameObjects": [
+    {
+      "Id": "ac9ae09c-dec1-40b0-9577-2daf86eac4e2",
+      "Name": "Camera",
+      "Position": "-300,0,190",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "CameraComponent",
+          "__enabled": true,
+          "BackgroundColor": "0,0,0,1",
+          "ClearFlags": "All",
+          "FieldOfView": 100,
+          "IsMainCamera": true,
+          "Orthographic": false,
+          "OrthographicHeight": 1204,
+          "Priority": 1,
+          "RenderExcludeTags": "",
+          "RenderTags": "",
+          "TargetEye": "None",
+          "Viewport": "0,0,1,1",
+          "ZFar": 10000,
+          "ZNear": 10
+        },
+        {
+          "__type": "Pixelate",
+          "__enabled": false,
+          "Scale": 0
+        },
+        {
+          "__type": "CubemapFog",
+          "__enabled": false,
+          "Blur": 0.5,
+          "EndDistance": 4096,
+          "FalloffExponent": 0,
+          "Sky": "materials/skybox/light_test_sky_sunny02.vmat",
+          "StartDistance": 10
+        },
+        {
+          "__type": "ChromaticAberration",
+          "__enabled": false,
+          "Offset": "4,6,0",
+          "Scale": 6.399997
+        },
+        {
+          "__type": "FilmGrain",
+          "__enabled": false,
+          "Intensity": 0.1,
+          "Response": 0.5
+        },
+        {
+          "__type": "Vignette",
+          "__enabled": false,
+          "Center": "0.6999999,0.5000001",
+          "Color": "0,0,0,1",
+          "Intensity": 0.9,
+          "Roundness": 9.399999,
+          "Smoothness": 1
+        },
+        {
+          "__type": "Bloom",
+          "__enabled": false,
+          "BloomColor": {
+            "color": [
+              {
+                "c": "1,1,1,1"
+              },
+              {
+                "t": 1,
+                "c": "1,1,1,1"
+              }
+            ],
+            "alpha": []
+          },
+          "BloomCurve": [
+            {
+              "y": 0.5
+            },
+            {
+              "x": 1,
+              "y": 1
+            }
+          ],
+          "Mode": "Additive",
+          "Strength": 0.82,
+          "Threshold": 0.3,
+          "ThresholdWidth": 5
+        }
+      ]
+    },
+    {
+      "Id": "a87260ef-b2f8-4dc7-b5d2-cb34a68e3fb2",
+      "Name": "Sun",
+      "Position": "125.5244,130.9237,-51.3471",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "DirectionalLight",
+          "__enabled": true,
+          "LightColor": "1,1,1,1",
+          "Shadows": false,
+          "SkyColor": "0.05882,0.07451,0.08235,1"
+        }
+      ]
+    },
+    {
+      "Id": "3a0e954c-3441-423f-aed4-36f42264b2a3",
+      "Name": "Manager",
+      "Position": "-16.99667,-17.73573,24.56316",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "KeygenManager",
+          "__enabled": true,
+          "BgCubePrefab": "test/prefabs/cube_bg.prefab",
+          "Camera": "ac9ae09c-dec1-40b0-9577-2daf86eac4e2",
+          "CitizenPrefab": "test/prefabs/citizen.prefab",
+          "CubePrefab": "test/prefabs/cube.prefab",
+          "EmojiWorldPrefab": "test/prefabs/emoji_world_panel.prefab"
+        }
+      ]
+    },
+    {
+      "Id": "23397310-b7ff-4da2-9c8b-e192e5f43fef",
+      "Name": "Test",
+      "Position": "-201.0819,-444.5436,671.0905",
+      "Enabled": true,
+      "Children": [
+        {
+          "Id": "41372026-2a9d-4a5c-9bf4-c6b62ce8605d",
+          "Name": "Object",
+          "Position": "0,0,0",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "TestComponent",
+              "__enabled": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Id": "068cd97b-5b35-4d6a-9dbb-097bdeda4a75",
+      "Name": "Fog",
+      "Position": "-180.0553,0,200",
+      "Components": [
+        {
+          "__type": "VolumetricFogVolume",
+          "__enabled": true,
+          "Bounds": {
+            "Mins": "-150,-150,-150",
+            "Maxs": "150,150,150"
+          },
+          "FalloffExponent": 1,
+          "Strength": 2
+        }
+      ]
+    },
+    {
+      "Id": "b12ba7d6-6a16-4fc2-8d1c-8774aca5228a",
+      "Name": "Hud",
+      "Position": "-134.6449,30.79963,116.7294",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "ScreenPanel",
+          "__enabled": true,
+          "AutoScreenScale": true,
+          "Opacity": 1,
+          "Scale": 1,
+          "ZIndex": 100
+        }
+      ],
+      "Children": [
+        {
+          "Id": "de32c152-b4d5-4304-b871-22104c93f96e",
+          "Name": "KeygenHud",
+          "Position": "0,0,0",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "KeygenHud",
+              "__enabled": true
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "SceneProperties": {
+    "FixedUpdateFrequency": 50,
+    "Lerping": true,
+    "MaxFixedUpdates": 5,
+    "NetworkFrequency": 60,
+    "ThreadedAnimation": true,
+    "TimeScale": 1,
+    "UseFixedUpdate": true
+  },
+  "Title": "keygen",
+  "Description": "",
+  "__references": []
+}

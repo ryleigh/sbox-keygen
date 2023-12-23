@@ -1,0 +1,24 @@
+{
+  "RootObject": {
+    "Id": "342302f2-8d2e-42a9-8365-b68fa9d002d3",
+    "Name": "cube",
+    "Scale": "0.1,0.1,0.1",
+    "Enabled": true,
+    "Components": [
+      {
+        "__type": "ModelRenderer",
+        "__enabled": true,
+        "BodyGroups": 18446744073709551615,
+        "MaterialGroup": null,
+        "MaterialOverride": null,
+        "Model": "models/dev/box.vmdl",
+        "RenderType": "Off",
+        "Tint": "1,1,1,1"
+      }
+    ]
+  },
+  "ShowInMenu": false,
+  "MenuPath": null,
+  "MenuIcon": null,
+  "__references": []
+}

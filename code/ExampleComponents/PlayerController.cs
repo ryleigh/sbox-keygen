@@ -10,7 +10,7 @@ public class PlayerController : Component, INetworkSerializable
 
 	[Property] public GameObject Body { get; set; }
 	[Property] public GameObject Eye { get; set; }
-	[Property] public CitizenAnimation AnimationHelper { get; set; }
+	[Property] public KeygenCitizenAnimator AnimationHelper { get; set; }
 	[Property] public bool FirstPerson { get; set; }
 
 	public Angles EyeAngles;
@@ -55,8 +55,6 @@ public class PlayerController : Component, INetworkSerializable
 				cam.Transform.Rotation = lookDir;
 			}
 
-
-
 			IsRunning = Input.Down( "Run" );
 		}
 
@@ -93,7 +91,7 @@ public class PlayerController : Component, INetworkSerializable
 			AnimationHelper.IsGrounded = cc.IsOnGround;
 			AnimationHelper.FootShuffle = rotateDifference;
 			AnimationHelper.WithLook( EyeAngles.Forward, 1, 1, 1.0f );
-			AnimationHelper.MoveStyle = IsRunning ? CitizenAnimation.MoveStyles.Run : CitizenAnimation.MoveStyles.Walk;
+			AnimationHelper.MoveStyle = IsRunning ? KeygenCitizenAnimator.MoveStyles.Run : KeygenCitizenAnimator.MoveStyles.Walk;
 		}
 	}
 

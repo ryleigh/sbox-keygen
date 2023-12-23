@@ -1,0 +1,423 @@
+﻿@using Sandbox;
+@using Sandbox.UI;
+@using System.Text;
+
+@inherits PanelComponent
+
+<root>
+    @if (Manager == null)
+    {
+        return;
+    }
+
+    <div class="frame_bot" style="background-color:@(Manager.FrameColor.Rgba);"></div>
+    <div class="frame_top" style="background-color:@(Manager.FrameColor.Rgba);"></div>
+    <div class="frame_left" style="background-color:@(Manager.FrameColor.Rgba);"></div>
+    <div class="frame_right" style="background-color:@(Manager.FrameColor.Rgba);"></div>
+    <div class="frame">
+
+        <!--
+        <div style="color:white; background-color: #00000033; top: 40px; white-space:pre-line;">
+            @($"Section: {Manager.SectionNum} ({Manager.CurrBeatsInSection}/{Manager.CurrSectionLength})\n")
+            @($"0: {Manager.SegmentAverages[0].ToString("0.00")}\n")
+            @($"1: {Manager.SegmentAverages[1].ToString("0.00")}\n")
+            @($"2: {Manager.SegmentAverages[2].ToString("0.00")}\n")
+            @($"3: {Manager.SegmentAverages[3].ToString("0.00")}\n")
+            @($"4: {Manager.SegmentAverages[4].ToString("0.00")}\n")
+            @($"5: {Manager.SegmentAverages[5].ToString("0.00")}\n")
+            @($"6: {Manager.SegmentAverages[6].ToString("0.00")}\n")
+            @($"7: {Manager.SegmentAverages[7].ToString("0.00")}\n")
+            @($"AttackMode: {MainAnim.AttackMode}\n")
+            @($"HoldTypeMode: {MainAnim.HoldTypeMode}\n")
+            @($"HoldType: {(CitizenAnimation.HoldTypes)MainAnim.HoldTypeInt} ({MainAnim.HoldTypeInt})\n")
+            @($"AllHoldTypes: {MainAnim.AllHoldTypes}\n")
+            @($"SwimmingMode: {MainAnim.SwimmingMode}\n")
+            @($"NoclipMode: {MainAnim.NoclipMode}\n")
+            @($"SpecialMovementMode: {MainAnim.SpecialMovementMode}\n")
+            @($"JumpMode: {MainAnim.JumpMode}\n")
+            @($"DuckMode: {MainAnim.DuckMode}\n")
+        </div>
+        -->
+
+        <div class="song_banner">
+            <div class="song_name" style="left:@(_songNameOffset)px; text-shadow: 0px 3px 5px @(_songNameShadowColor.Rgb); opacity: @(0.15f);">
+                Music: Varg2™ — STARS COME OUT AT NIGHT / FBT
+            </div>
+
+            <div class="banner_emoji" style="left:@(_bannerEmojiOffset)px; text-shadow: 0px 3px 5px #000000; opacity: @(0.2f);">
+                @(_currBanner)
+            </div>
+        </div>
+    
+        @{
+            var genBgColor = new Color(0.22f, 0.22f, 0.22f, Manager.SegmentAverages[3] * 0.7f);
+            var genLeft = ScreenCenterX - 250f + Utils.FastSin(_startingTimeOffset + _elapsedTime * 0.27f) * 400f;
+            var genTop = ScreenCenterY - 75f + Utils.FastSin(_startingTimeOffset + _elapsedTime * 0.2f) * 300f;
+
+            // Log.Info($"ScreenCenterX: {ScreenCenterX} Screen.Width: {Screen.Width} Panel.ScaleFromScreen: {Panel.ScaleFromScreen}");
+        }
+        <div class="gen_container" style="background-color:@(genBgColor.Rgba); left: @(genLeft)px; top: @(genTop)px;">
+            <div class="gen_key" style="color:@((new Color(1f, 1f, 1f, Manager.SegmentAverages[1] * 0.4f)).Rgba);">
+                @if(_numSolvedChars > 0)
+                {
+                    <label style="color:@(GetSolvedColor().Rgba);">@(KeyRevealed)</label>
+                }
+                @if(_isGenerating && !_hasFailed)
+                {
+                    <label style="color:@(_currSolvingColor.Rgb)">@(KeyCurrSolving)</label>
+                }
+                @if(_numSolvedChars < 31)
+                {
+                    <label style="color:#886666ff">@(KeyHidden)</label>
+                }
+            </div>
+
+            @{
+                var buttonMargin = 300f;
+            }
+
+            <div class="gen_button" style="opacity:@(_isGenerating ? 0.3f : 1f); margin-left: @(_isGenerating ? Utils.Map(_numSolvedChars, 0, 32, -buttonMargin, buttonMargin) : buttonMargin)px;" onclick="@( () => Generate() )">
+                <div style="color:@(GetGenerateMessageColor().Rgba);">@(GetGenerateMessage())</div>
+            </div>
+
+            @if(_showCheckmark)
+            {
+                <div class="checkmark" style="transform: scale(@(Utils.Map(_hasFailed ? _timeSinceFail : _timeSinceValid, 0f, 0.25f, 2f, 1f, EasingType.QuadOut)));">@(_hasFailed ? "❌" : "✔")</div>
+            }
+        </div>
+
+        @{
+            var amplitudeX = 60f * (0.5f + Utils.FastSin(Time.Now * 0.63f) * 0.5f);
+            var amplitudeY = 60f * (0.5f + Utils.FastSin(Time.Now * 0.5f) * 0.5f);
+        }
+
+        @for(int i = 0; i < _trailPoints.Length; i++)
+        {
+            var offset = new Vector2(Utils.FastSin(Time.Now * 2.0f + i * 1.8f) * amplitudeX, Utils.FastSin(Time.Now * 1.7f + i * 2f) * -amplitudeY);
+            var opacity = 0.5f + Utils.FastSin(Time.Now * 1.37f + i * 0.84f) * 0.5f;
+
+            <div class="trail" style="left:@(_trailPoints[i].x - 16 + offset.x)px; top:@(_trailPoints[i].y - 16 + offset.y)px; z-index:@(100 - i); opacity:@(opacity);">
+                @(_trailEmoji[(i + Manager.NumBeats) % _trailEmoji.Length])
+            </div>
+        }
+
+        <div class="overlay" style="opacity:@(Utils.Map(Manager.ElapsedTime, 0f, 1.5f, 1f, 0f, EasingType.SineIn));"></div>
+    </div>
+</root>
+
+@code
+{
+    public KeygenManager Manager { get; private set; }
+    public KeygenCitizenAnimator MainAnim => Manager.MainCitizen.Components.Get<KeygenCitizenAnimator>();
+
+    public string KeyRevealed { get; private set; }
+    public string KeyCurrSolving { get; private set; }
+    public string KeyHidden { get; private set; }
+
+    private Color _currSolvingColor;
+
+    private int _numSolvedChars;
+    private const char UNKNOWN_CHAR = '?';
+    private bool _showCheckmark;
+    private TimeSince _timeSinceValid;
+    private bool _showingValidKey;
+
+    private bool _isGenerating;
+    private TimeSince _timeSinceGenerateChar;
+    private float _currDelay;
+    private string _genKey = "";
+
+    public float ScreenW => Screen.Width * Panel.ScaleFromScreen;
+    public float ScreenH => Screen.Height * Panel.ScaleFromScreen;
+    public float ScreenCenterX => Screen.Width * Panel.ScaleFromScreen * 0.5f;
+    public float ScreenCenterY => Screen.Height * Panel.ScaleFromScreen * 0.5f;
+    public float MouseX => Mouse.Position.x * Panel.ScaleFromScreen;
+    public float MouseY => Mouse.Position.y * Panel.ScaleFromScreen;
+
+    private float _songNameOffset;
+    private Color _songNameShadowColor;
+    private float _bannerEmojiOffset;
+
+    private Vector2[] _trailPoints = new Vector2[8];
+    private string[] _trailEmoji = new string[] { 
+        "🎵", "🎵", "🎵", "🎶", "🎵", "🎵", "🎶", "🎵", "🎵", "🎵",
+        "🎵", "🎵", "🎵", "🎶", "🎵", "🎵", "🎶", "🎵", "🎵", "🎵", "🎶", "🎵", "🎶", "🎵", "🎵",
+        "🎵", "🕷️", "🎵", "🎶", "🎵", "🎵", "🎏", "🎵", "🎵", "🎵", "🎶", "🎲", "🎶", "🎵",
+        "☘️", "🎵", "🎵", "🎶", "🎵", "🍀", "🎶", "🎵", "🎏", "🎵", "🥉", "🎵", "🎶", "🎵",
+        "🎵", "☘️", "🎵", "🎶", "🎵", "🎵", "🕘", "🎵", "🎵", "🎵", "🎶", "🌊", "🎶", "🎵",
+        "🐙", "🎵", "🎵", "🎶", "🎵", "🎵", "🎶", "🌊", "🎵", "🎵", "🍀", "🎵", "🎶", "🎵",
+        "⭕", "🎵", "🎵", "🌊", "🎵", "🎵", "🎶", "🅱️", "🎵", "🎵", "🎶", "🎵", "🅱️", "🎵",
+        "🎵", "🎱", "🎵", "🎰", "🎵", "🎵", "🎶", "🎵", "🖐️", "🎵", "🎶", "🎵", "🕘", "🎵",
+        "🕷️", "🎵", "🎵", "🎶", "✡️", "🎵", "🎶", "🎵", "🎵", "🎵", "🥇", "🎵", "🎶", "🎵",
+        "🎵", "🎲", "🎵", "🎶", "🎵", "🎵", "🎲", "🎵", "🎵", "🎵", "🅱️", "🎵", "🎶", "🎵",
+        "🎵", "✡️", "🎵", "🎶", "🎵", "🎵", "🌊", "🎵", "🎵", "🕕", "🎵", "🎶", "🎵",
+        "🎵", "🎵", "🎶", "🎵", "✡️", "🎵", "🎵", "🎵", "🎶", "🍒",
+    };
+
+    private bool _hasFailed;
+    private TimeSince _timeSinceFail;
+
+    private float _elapsedTime;
+    private float _timeScale;
+    private float _startingTimeOffset;
+
+    private TimeSince _timeSinceCurrSolvCharChange;
+    private float _nextCurrSolvCharDelay;
+
+    private string[] _bannerEmoji = new string[] { "🕒", "🕐", "🕘", "☪️", "🕖", "↪️", "🕓", "🕗", "🕘", "🕖", "🕑", "🕳️", "🕓", "🎏", "🕕", "🕐", "🆎", "🕑", "🕖", "🥐", "🅰️", "🕓", "🅰️", "🕑", "🕖", "🕳️", "🍆", "🕗", "🕘", "☪️", "🕗" };
+    private string _currBanner = "";
+
+    protected override void OnAwake()
+    {
+        base.OnAwake();
+
+        Manager = Scene.GetAllComponents<KeygenManager>().FirstOrDefault();
+
+        _numSolvedChars = 0;
+        RefreshKey();
+        _currSolvingColor = Color.White;
+
+        _songNameOffset = 2300f;
+        _songNameShadowColor = new Color(0.5f, 0.5f, 0.5f);
+
+        _bannerEmojiOffset = _songNameOffset + 500f;
+        _timeScale = 1f;
+        _startingTimeOffset = Game.Random.Float(0f, 200f);
+    }
+
+    void RefreshKey()
+    {
+        KeyRevealed = "";
+        KeyHidden = "";
+
+        for(int i = 0; i < _numSolvedChars; i++)
+        {
+            KeyRevealed += _genKey.ToCharArray()[i];
+
+            if(i == 8 || i == 12 || i == 16 || i == 20)
+                KeyRevealed += "-";
+        }
+
+        int ignoreNum = 1;
+        for(int i = _numSolvedChars; i < 32; i++)
+        {
+            if (ignoreNum > 0)
+                ignoreNum--;
+            else
+                KeyHidden += UNKNOWN_CHAR;
+
+            if(i == 8 || i == 12 || i == 16 || i == 20)
+                KeyHidden += "-";
+        }
+    }
+
+    public void OnBeat()
+    {
+        _currBanner = "";
+        for(int i = 0; i < 31; i++)
+        {
+            if (Game.Random.Float(0f, 1f) < 0.5f)
+                _currBanner += _bannerEmoji[i];
+            else
+                _currBanner += (Game.Random.Float(0f, 1f) < 0.9f) ? "🎵" : "🎶";
+        }
+    }
+
+    protected override void OnUpdate()
+    {
+        base.OnUpdate();
+
+        float dt = Time.Delta;
+
+        float targetTimeScale = _hasFailed ? -0.33f : (_isGenerating ? 0.6f : 1f);
+        _timeScale = Utils.DynamicEaseTo(_timeScale, targetTimeScale, 0.05f, dt);
+        _elapsedTime += dt * _timeScale;
+
+        if(_hasFailed)
+        {
+            if(_timeSinceFail > 2f)
+            {
+                _hasFailed = false;
+                _showCheckmark = false;
+                _numSolvedChars = 0;
+                RefreshKey();
+            }
+        }
+
+        if(_isGenerating)
+        {
+            if(_timeSinceGenerateChar > _currDelay)
+            {
+                var failChance = Utils.Map(_numSolvedChars, 3, 31, 0f, 0.55f, EasingType.ExpoIn);
+                if(Game.Random.Float(0f, 1f) < failChance)
+                {
+                    var failSfx = Sound.Play("error");
+                    failSfx.ListenLocal = true;
+                    failSfx.Pitch = Game.Random.Float(0.9f, 1.2f);
+                    failSfx.Volume = 0.8f;
+
+                    _hasFailed = true;
+                    _timeSinceFail = 0f;
+                    _showCheckmark = true;
+                    _currDelay = 0.04f;
+                    _isGenerating = false;
+                }
+                else
+                {
+                    _numSolvedChars++;
+                    RefreshKey();
+
+                    var charSfx = Sound.Play("beep2");
+                    charSfx.ListenLocal = true;
+                    charSfx.Volume = Utils.Map(_numSolvedChars, 1, 31, 0.25f, 0.35f);
+                    charSfx.Pitch = Utils.Map(_numSolvedChars, 1, 31, 1f, 1.5f, EasingType.SineIn);
+
+                    _timeSinceGenerateChar = 0f;
+
+                    var minDelay = Utils.Map(_numSolvedChars, 1, 31, 0.04f, 0.15f, EasingType.SineIn);
+                    var maxDelay = Utils.Map(_numSolvedChars, 1, 31, 0.5f, 1.5f, EasingType.SineIn);
+                    _currDelay = Game.Random.Float(minDelay, maxDelay);
+
+                    if (_numSolvedChars == 31)
+                        _currDelay += Game.Random.Float(0.7f, 1.5f);
+
+                    if(_numSolvedChars >= 32)
+                    {
+                        _isGenerating = false;
+                        _showingValidKey = true;
+                        _showCheckmark = true;
+                        _timeSinceValid = 0f;
+
+                        var successSfx = Sound.Play("success2");
+                        successSfx.ListenLocal = true;
+                        successSfx.Pitch = Game.Random.Float(0.9f, 1.1f);
+                        successSfx.Volume = 0.85f;
+                    }
+                }
+            }
+
+            // if(Game.Random.Int(0, 10) == 0)
+            if(_timeSinceCurrSolvCharChange > _nextCurrSolvCharDelay)
+            {
+                KeyCurrSolving = $"{IntToHexChar(Game.Random.Int(0, 15))}";
+                _currSolvingColor = new Color(Game.Random.Float(0f, 1f), Game.Random.Float(0f, 1f), Game.Random.Float(0f, 1f));
+
+                _timeSinceCurrSolvCharChange = 0f;
+                _nextCurrSolvCharDelay = Game.Random.Float(0.04f, 0.13f) * Utils.Map(_numSolvedChars, 1, 31, 1f, 0.1f, EasingType.SineIn);
+            }
+        }
+
+        _songNameOffset -= dt * 100f;
+        if (_songNameOffset < -1000f)
+            _songNameOffset = 2000f;
+
+        _bannerEmojiOffset -= dt * 100f;
+        if(_bannerEmojiOffset < -1000f)
+            _bannerEmojiOffset = 2000f;
+
+        var r = _songNameShadowColor.r;
+        var g = _songNameShadowColor.g;
+        var b = _songNameShadowColor.b;
+        float STRENGTH = 2f;
+        _songNameShadowColor = new Color(
+            Math.Clamp(r + dt * Game.Random.Float(-1f, 1f) * STRENGTH, 0f, 1f),
+            Math.Clamp(g + dt * Game.Random.Float(-1f, 1f) * STRENGTH, 0f, 1f), 
+            Math.Clamp(b + dt * Game.Random.Float(-1f, 1f) * STRENGTH, 0f, 1f)
+        );
+
+        for(int i = 0; i < _trailPoints.Length; i++)
+        {
+            var targetPos = (i == 0)
+                ? Mouse.Position * Panel.ScaleFromScreen
+                : _trailPoints[i - 1];
+
+            _trailPoints[i] = Utils.DynamicEaseTo(_trailPoints[i], targetPos, 0.03f + ((i + Manager.NumBeats) % 12) * 0.03f, dt);
+        }
+    }
+
+    void Generate()
+    {
+        if(_isGenerating || _hasFailed || (_numSolvedChars == 32 && _timeSinceValid < 2f))
+        {
+            var failSfx = Sound.Play("deny2");
+            failSfx.ListenLocal = true;
+            failSfx.Pitch = 1f;
+            failSfx.Volume = 0.9f;
+
+            return;
+        }
+
+        var clickSfx = Sound.Play("click");
+        clickSfx.ListenLocal = true;
+        clickSfx.Volume = 0.95f;
+        clickSfx.Pitch = Game.Random.Float(0.9f, 1f);
+
+        _numSolvedChars = 0;
+        _hasFailed = false;
+        _genKey = GenerateKeyString();
+
+        _isGenerating = true;
+        _showingValidKey = false;
+        _showCheckmark = false;
+        _timeSinceGenerateChar = 0f;
+        _currDelay = Game.Random.Float(0.04f, 0.5f);
+        RefreshKey();
+
+        _timeSinceCurrSolvCharChange = 0f;
+        _nextCurrSolvCharDelay = Game.Random.Float(0.01f, 0.1f);
+    }
+
+    string GetGenerateMessage()
+    {
+        if (_isGenerating)
+            return "Generating...";
+        else if (_hasFailed)
+            return "Invalid!";
+        else if (_numSolvedChars == 32 && _timeSinceValid < 2f)
+            return "Valid";
+
+        return "Generate Key";
+    }
+
+    Color GetGenerateMessageColor()
+    {
+        if (_hasFailed)
+            return new Color(1f, 0.15f, 0.15f, 0.8f);
+        else if (_numSolvedChars == 32 && _timeSinceValid < 2f)
+            return new Color(0.15f, 1f, 0.15f, 0.8f);
+
+        return new Color(1f, 1f, 1f, 0.7f);
+    }
+
+    Color GetSolvedColor()
+    {
+        if (_hasFailed)
+            return Color.Lerp(new Color(1f, 0.5f, 0.5f), new Color(1f, 0.05f, 0.05f), 0.5f + Utils.FastSin(Time.Now * 64f) * 0.5f);
+        else if(_showingValidKey)
+            return Color.Lerp(new Color(0.5f, 0.5f, 1f), new Color(0f, 0.8f, 1f), 0.5f + Utils.FastSin(Time.Now * 32f) * 0.5f);
+
+        return new Color(0.5f, 0.5f, 1f);
+    }
+
+    protected override int BuildHash()
+    {
+        return System.HashCode.Combine(Time.Now);
+    }
+
+    string GenerateKeyString()
+    {
+        StringBuilder result = new StringBuilder(32);
+
+        for(int i = 0; i < 32; i++)
+        {
+            result.Append(IntToHexChar(Game.Random.Int(0, 15)));
+        }
+
+        return result.ToString();
+    }
+
+    public static char IntToHexChar(int number)
+    {
+        return number.ToString("X")[0];
+    }
+}

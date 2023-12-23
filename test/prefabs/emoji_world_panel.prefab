@@ -1,0 +1,28 @@
+{
+  "RootObject": {
+    "Id": "85aa8fe0-3a3b-46b3-88e3-f11f927df1f2",
+    "Name": "EmojiWorld",
+    "Position": "200,0,168.2392",
+    "Rotation": "0,-0.00872654,0,0.9999619",
+    "Enabled": true,
+    "Components": [
+      {
+        "__type": "WorldPanel",
+        "__enabled": true,
+        "HorizontalAlign": "Center",
+        "LookAtCamera": false,
+        "PanelSize": "1000,1000",
+        "RenderScale": 1,
+        "VerticalAlign": "Center"
+      },
+      {
+        "__type": "EmojiWorldPanel",
+        "__enabled": true
+      }
+    ]
+  },
+  "ShowInMenu": false,
+  "MenuPath": null,
+  "MenuIcon": null,
+  "__references": []
+}

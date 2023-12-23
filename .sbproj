@@ -1,8 +1,8 @@
 {
-  "Title": "Testbed",
+  "Title": "s\u0026box Keygen",
   "Type": "game",
-  "Org": "facepunch",
-  "Ident": "testbed",
+  "Org": "ryleigh",
+  "Ident": "keygen",
   "Tags": null,
   "Schema": 1,
   "HasAssets": true,
@@ -14,7 +14,7 @@
   "PackageReferences": [],
   "EditorReferences": null,
   "Metadata": {
-    "MaxPlayers": 16,
+    "MaxPlayers": 1,
     "MinPlayers": 1,
     "GameNetworkType": "Multiplayer",
     "MapSelect": "Unrestricted",
@@ -29,6 +29,6 @@
     "CsProjName": "",
     "HttpAllowList": null,
     "TickRate": 50,
-    "StartupScene": "scenes/tests/menu.scene"
+    "StartupScene": "test/keygen.scene"
   }
 }

@@ -1,0 +1,45 @@
+﻿@using Sandbox;
+@using Sandbox.UI;
+@using System.Text;
+
+@inherits PanelComponent
+
+<root>
+    <div class="emoji" style="opacity:@(0.15f + Utils.FastSin(Time.Now * 3.3f) * 0.15f);">
+        @(Emoji)
+    </div>
+</root>
+
+@code
+{
+    public string Emoji { get; set; }
+    public float HorizontalSpeed { get; set; }
+    private float _timeOffset;
+    private float _sinSpeed;
+    private float _height;
+
+    protected override void OnEnabled()
+    {
+        base.OnEnabled();
+        _timeOffset = Game.Random.Float(0f, 30f);
+        _sinSpeed = Game.Random.Float(2f, 4.5f);
+        _height = Game.Random.Float(220f, 400f);
+    }
+
+    protected override void OnUpdate()
+    {
+        base.OnUpdate();
+
+        float dt = Time.Delta;
+
+        Transform.Position += (new Vector3(0f, -1f, 0f) * HorizontalSpeed + new Vector3(0f, 0f, 1f) * Utils.FastSin(_timeOffset + Time.Now * _sinSpeed) * _height) * dt;
+
+        if (Transform.Position.y < -600f || Transform.Position.y > 600f)
+            GameObject.Destroy();
+    }
+
+    protected override int BuildHash()
+    {
+        return System.HashCode.Combine(Time.Now);
+    }
+}
